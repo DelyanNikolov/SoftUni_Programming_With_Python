@@ -12,7 +12,7 @@ while command != "No Money":
         list_command = command.split()
         gift = list_command[1]
         gift_index = int(list_command[2])
-        if gift_index < len(gifts_list):
+        if 0 < gift_index < len(gifts_list):
             gifts_list[gift_index] = gift
     elif "JustInCase" in command:
         list_command = command.split()
