@@ -4,7 +4,7 @@ command = input().split(" ")
 while "end" not in command:
     if "exchange" in command:
         split_index = int(command[1])
-        if split_index > len(list_of_numbers):
+        if split_index > len(list_of_numbers) or split_index < 0:
             print("Invalid index")
         else:
             left_part = list_of_numbers[:split_index + 1]
@@ -16,7 +16,7 @@ while "end" not in command:
         subcommand = command[1]
         if subcommand == "even":
             even_numbers = [even for even in list_of_numbers if even % 2 == 0]
-            if len(even_numbers) < 1:
+            if not even_numbers:
                 print("No matches")
             else:
                 max_even_element = max(even_numbers)
@@ -24,7 +24,7 @@ while "end" not in command:
                 print(index_of_max_even_element)
         elif subcommand == "odd":
             odd_numbers = [odd for odd in list_of_numbers if odd % 2 != 0]
-            if len(odd_numbers) < 1:
+            if not odd_numbers:
                 print("No matches")
             else:
                 max_odd_element = max(odd_numbers)
@@ -35,7 +35,7 @@ while "end" not in command:
         subcommand = command[1]
         if subcommand == "even":
             even_numbers = [even for even in list_of_numbers if even % 2 == 0]
-            if len(even_numbers) < 1:
+            if not even_numbers:
                 print("No matches")
             else:
                 min_even_element = min(even_numbers)
@@ -43,7 +43,7 @@ while "end" not in command:
                 print(index_of_min_even_element)
         elif subcommand == "odd":
             odd_numbers = [odd for odd in list_of_numbers if odd % 2 != 0]
-            if len(odd_numbers) < 1:
+            if not odd_numbers:
                 print("No matches")
             else:
                 min_odd_element = min(odd_numbers)
@@ -53,7 +53,7 @@ while "end" not in command:
     if "first" in command:
         count = int(command[1])
         subcommand = command[2]
-        if count > len(list_of_numbers):
+        if count > len(list_of_numbers) or count <= 0:
             print("Invalid count")
         else:
             if subcommand == "even":
@@ -68,18 +68,16 @@ while "end" not in command:
     if "last" in command:
         count = int(command[1])
         subcommand = command[2]
-        if count > len(list_of_numbers):
+        if count > len(list_of_numbers) or count <= 0:
             print("Invalid count")
         else:
             if subcommand == "even":
                 even_numbers = [even for even in list_of_numbers if even % 2 == 0]
-                even_numbers = even_numbers[::-1]
-                last_even_numbers = even_numbers[:count]
+                last_even_numbers = even_numbers[len(even_numbers)-count:]
                 print(last_even_numbers)
             elif subcommand == "odd":
                 odd_numbers = [odd for odd in list_of_numbers if odd % 2 != 0]
-                odd_numbers = odd_numbers[::-1]
-                last_odd_numbers = odd_numbers[:count]
+                last_odd_numbers = odd_numbers[len(list_of_numbers) - count:]
                 print(last_odd_numbers)
     command = input().split(" ")
 
