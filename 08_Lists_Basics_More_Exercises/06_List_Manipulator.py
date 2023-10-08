@@ -1,122 +1,86 @@
-def max_odd(data):
-    lst = [x for x in data if x % 2 != 0][-1]
-    if len(lst) < 1:
-        return "No matches"
-    else:
-        pass
+list_of_numbers = list(map(int, input().split(" ")))
 
-def max_even(data):
-    return sorted([x for x in data if x % 2 == 0])[-1]
-
-
-def min_odd(data):
-    lst = sorted([x for x in data if x % 2 != 0])
-    if len(lst) < 1:
-        return "No matches"
-    else:
-        min_odd_element = min(lst)
-        index_min_odd_element = data.index(min_odd_element)
-        return index_min_odd_element
-
-
-def min_even(data):
-    lst = [x for x in data if x % 2 == 0]
-    if len(lst) < 1:
-        return "No matches"
-    else:
-        min_even_element = min(lst)
-        index_min_even_element = data.index(min_even_element)
-        return index_min_even_element
-
-
-def first_odd(data, numbers):
-    odds = []
-    for num in data:
-        if num % 2 != 0:
-            odds.append(num)
-    firs_odds = odds[:numbers]
-    return firs_odds
-
-
-def first_even(data, numbers):
-    evens = []
-    if numbers > len(data) - 1:
-        return "Invalid count"
-    else:
-        for num in data:
-            if num % 2 == 0:
-                evens.append(num)
-        evens = evens[:numbers]
-        return evens
-
-
-def last_odd(data, numbers):
-    last_odds = []
-    for num in range((len(data) - 1), -1, -1):
-        if data[num] % 2 != 0:
-            last_odds.append(data[num])
-    last_odds = last_odds[:numbers + 1]
-    return last_odds[::-1]
-
-
-def last_even(data, numbers):
-    last_odds = []
-    for _ in range(numbers):
-        for num in range((len(data) - 1), -1, -1):
-            if data[num] % 2 == 0:
-                last_odds.append(data[num])
-    return last_odds[::-1]
-
-
-initial_list = input().split()
-initial_list = list(map(int, initial_list))
-command = input().split()
+command = input().split(" ")
 while "end" not in command:
     if "exchange" in command:
-        index = int(command[1])
-        if index > len(initial_list) - 1:
+        split_index = int(command[1])
+        if split_index > len(list_of_numbers):
             print("Invalid index")
         else:
-            left_part = initial_list[:index + 1]
-            right_part = initial_list[index + 1:]
-            initial_list.clear()
-            initial_list = right_part + left_part
+            left_part = list_of_numbers[:split_index + 1]
+            right_part = list_of_numbers[split_index + 1:]
+            list_of_numbers.clear()
+            list_of_numbers = right_part + left_part
 
     if "max" in command:
-        sub_command = command[1]
-        if sub_command == "odd":
-
-            max_odd_element = max_odd(initial_list)
-            index_max_ood_element = initial_list.index(max_odd_element)
-            print(index_max_ood_element)
-        elif sub_command == "even":
-            max_even_element = max_even(initial_list)
-            index_max_even_element = initial_list.index(max_even_element)
-            print(index_max_even_element)
+        subcommand = command[1]
+        if subcommand == "even":
+            even_numbers = [even for even in list_of_numbers if even % 2 == 0]
+            if len(even_numbers) < 1:
+                print("No matches")
+            else:
+                max_even_element = max(even_numbers)
+                index_of_max_even_element = len(list_of_numbers) - list_of_numbers[:: -1].index(max_even_element) - 1
+                print(index_of_max_even_element)
+        elif subcommand == "odd":
+            odd_numbers = [odd for odd in list_of_numbers if odd % 2 != 0]
+            if len(odd_numbers) < 1:
+                print("No matches")
+            else:
+                max_odd_element = max(odd_numbers)
+                index_of_max_odd_element = len(list_of_numbers) - list_of_numbers[:: -1].index(max_odd_element) - 1
+                print(index_of_max_odd_element)
 
     if "min" in command:
-        sub_command = command[1]
-        if sub_command == "odd":
-            print(min_odd(initial_list))
-        elif sub_command == "even":
-            print(min_even(initial_list))
+        subcommand = command[1]
+        if subcommand == "even":
+            even_numbers = [even for even in list_of_numbers if even % 2 == 0]
+            if len(even_numbers) < 1:
+                print("No matches")
+            else:
+                min_even_element = min(even_numbers)
+                index_of_min_even_element = len(list_of_numbers) - list_of_numbers[:: -1].index(min_even_element) - 1
+                print(index_of_min_even_element)
+        elif subcommand == "odd":
+            odd_numbers = [odd for odd in list_of_numbers if odd % 2 != 0]
+            if len(odd_numbers) < 1:
+                print("No matches")
+            else:
+                min_odd_element = min(odd_numbers)
+                index_of_min_odd_element = len(list_of_numbers) - list_of_numbers[:: -1].index(min_odd_element) - 1
+                print(index_of_min_odd_element)
+
     if "first" in command:
         count = int(command[1])
-        sub_command = command[2]
-        if sub_command == "odd":
-            print(first_odd(initial_list, count))
-        elif sub_command == "even":
-            print(first_even(initial_list, count))
+        subcommand = command[2]
+        if count > len(list_of_numbers):
+            print("Invalid count")
+        else:
+            if subcommand == "even":
+                even_numbers = [even for even in list_of_numbers if even % 2 == 0]
+                first_even_numbers = even_numbers[:count]
+                print(first_even_numbers)
+            elif subcommand == "odd":
+                odd_numbers = [odd for odd in list_of_numbers if odd % 2 != 0]
+                first_odd_numbers = odd_numbers[:count]
+                print(first_odd_numbers)
 
     if "last" in command:
         count = int(command[1])
-        sub_command = command[2]
-        if count > len(initial_list):
+        subcommand = command[2]
+        if count > len(list_of_numbers):
             print("Invalid count")
-        if sub_command == "odd":
-            print(last_odd(initial_list, count))
-        elif sub_command == "even":
-            print(last_even(initial_list, count))
+        else:
+            if subcommand == "even":
+                even_numbers = [even for even in list_of_numbers if even % 2 == 0]
+                even_numbers = even_numbers[::-1]
+                last_even_numbers = even_numbers[:count]
+                print(last_even_numbers)
+            elif subcommand == "odd":
+                odd_numbers = [odd for odd in list_of_numbers if odd % 2 != 0]
+                odd_numbers = odd_numbers[::-1]
+                last_odd_numbers = odd_numbers[:count]
+                print(last_odd_numbers)
+    command = input().split(" ")
 
-    command = input().split()
-print(initial_list)
+print(list_of_numbers)
