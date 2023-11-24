@@ -39,7 +39,8 @@ while True:
             continue
         else:
             cities_data[town_name]["gold"] += gold_added
-            print(f"{gold_added} gold added to the city treasury. {town_name} now has {cities_data[town_name]['gold']} gold.")
+            print(f"{gold_added} gold added to the city treasury. {town_name} now has {cities_data[town_name]['gold']} "
+                  f"gold.")
 
 if len(cities_data) > 0:
     print(f"Ahoy, Captain! There are {len(cities_data.keys())} wealthy settlements to go to:")
