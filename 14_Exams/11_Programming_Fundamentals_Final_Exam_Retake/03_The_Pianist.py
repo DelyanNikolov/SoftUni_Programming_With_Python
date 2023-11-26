@@ -74,5 +74,5 @@ while True:
         change_key_of_piece(piece_name, piece_key)
 
 for info in list_of_pieces:
-    for name, details in info.items():
-        print(f"{name} -> Composer: {details['composer']}, Key: {details['key']}")
+    for name_song, details in info.items():
+        print(f"{name_song} -> Composer: {details['composer']}, Key: {details['key']}")
