@@ -1,7 +1,7 @@
 queries_count = int(input())
 
 numbers_stack = []
-to_print = []
+
 for q in range(queries_count):
     query = input().split()
     if query[0] == "1":
@@ -16,7 +16,6 @@ for q in range(queries_count):
     elif query[0] == "4":
         if numbers_stack:
             print(min(numbers_stack))
-while numbers_stack:
-    to_print.append(numbers_stack.pop())
-print(", ".join(map(str, to_print)))
 
+numbers_stack.reverse()
+print(*numbers_stack, sep=", ")
