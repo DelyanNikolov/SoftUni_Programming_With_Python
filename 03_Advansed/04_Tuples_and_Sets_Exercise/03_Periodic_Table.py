@@ -6,3 +6,11 @@ for _ in range(input_lines_count):
 
 for item in periodic_table:
     print(item)
+
+# table = set()
+#
+# for _ in range(int(input())):
+#     for el in input().split():  # input().split() -> ["Ce", "O", "H"]
+#         table.add(el)
+#
+# print(*table, sep="\n")
