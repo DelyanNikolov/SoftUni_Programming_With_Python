@@ -1,5 +1,6 @@
 first_sequences = set(int(el) for el in input().split())
 second_sequences = set(int(el) for el in input().split())
+
 commands = {
     "Add First": lambda x: [first_sequences.add(int(el)) for el in x],
     "Add Second": lambda x: [second_sequences.add(int(el)) for el in x],
