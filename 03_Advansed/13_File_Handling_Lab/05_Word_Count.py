@@ -20,7 +20,7 @@ for searched_word in searched_words:
     words_count[searched_word] = results.count(searched_word)
 
 sorted_result = sorted(words_count.items(), key=lambda x: -x[1])
-a = 5
-with open(output_path, "w") as output_file: # write mode so in testing to create and re write file on every run
+
+with open(output_path, "w") as output_file:  # write mode so in testing to create and re write file on every run
     for word, count in sorted_result:
         output_file.write(f"{word} - {count}\n")
