@@ -1,12 +1,6 @@
 from typing import List
 
-from project.animal import Animal
-from project.caretaker import Caretaker
-from project.cheetah import Cheetah
-from project.keeper import Keeper
-from project.lion import Lion
-from project.tiger import Tiger
-from project.vet import Vet
+from project.animals.animal import Animal
 from project.worker import Worker
 
 
