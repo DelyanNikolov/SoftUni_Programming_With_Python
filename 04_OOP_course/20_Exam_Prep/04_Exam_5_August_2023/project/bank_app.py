@@ -22,7 +22,6 @@ class BankApp:
             raise Exception("Invalid loan type!")
 
         loan = self.VALID_LOAN_TYPES[loan_type]()
-
         self.loans.append(loan)
         return f"{loan_type} was successfully added."
 
@@ -35,7 +34,6 @@ class BankApp:
 
         client = self.VALID_CLIENT_TYPES[client_type](client_name, client_id, income)
         self.clients.append(client)
-
         return f"{client_type} was successfully added."
 
     def grant_loan(self, loan_type: str, client_id: str):
@@ -46,7 +44,6 @@ class BankApp:
 
         self.loans.remove(loan)
         client.loans.append(loan)
-
         return f"Successfully granted {loan_type} to {client.name} with ID {client_id}."
 
     def remove_client(self, client_id: str):
@@ -67,7 +64,6 @@ class BankApp:
             if loan.__class__.__name__ == loan_type:
                 loan.increase_interest_rate()
                 number_of_changed_loans += 1
-
         return f"Successfully changed {number_of_changed_loans} loans."
 
     def increase_clients_interest(self, min_rate: float):
@@ -76,7 +72,6 @@ class BankApp:
             if client.interest < min_rate:
                 client.increase_clients_interest()
                 changed_client_rates_number += 1
-
         return f"Number of clients affected: {changed_client_rates_number}."
 
     def get_statistics(self):

@@ -1,5 +1,4 @@
 from project.clients.base_client import BaseClient
-from project.loans.student_loan import StudentLoan
 
 
 class Student(BaseClient):
