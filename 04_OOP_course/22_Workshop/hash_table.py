@@ -10,8 +10,8 @@ class HashTable:
 
     def __setitem__(self, key, value):
         try:
-            existing_value_key = self.__keys.index(key)
-            self.__values[existing_value_key] = value
+            existing_value_index = self.__keys.index(key)
+            self.__values[existing_value_index] = value
         except ValueError:
             if self.count == self.__length:
                 self.__resize()
@@ -60,17 +60,17 @@ class HashTable:
         return "{" + ", ".join(result) + " }"
 
 
-table = HashTable()
-table["name"] = "Peter"
-table["age"] = 25
-table["street"] = "Skopie"
-table["city"] = "Plovdiv"
-table["nickname"] = "Alf"
-print(table)
-print(table.get("name"))
-print(table["age"])
-print(len(table))
-print(table.count)
-table.add("target", "Bol")
-table.add("name", "Delyan")
-print(table)
+# table = HashTable()
+# table["name"] = "Peter"
+# table["age"] = 25
+# table["street"] = "Skopie"
+# table["city"] = "Plovdiv"
+# table["nickname"] = "Alf"
+# print(table)
+# print(table.get("name"))
+# print(table["age"])
+# print(len(table))
+# print(table.count)
+# table.add("target", "Bol")
+# table.add("name", "Delyan")
+# print(table)
