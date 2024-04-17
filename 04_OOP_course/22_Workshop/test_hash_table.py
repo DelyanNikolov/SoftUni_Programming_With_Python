@@ -71,6 +71,38 @@ class TestHashTable(TestCase):
             self.table.__getitem__("city")
         self.assertEqual(error_msg, str(ke.exception))
 
+    def test_get_existing_key_expect_return_value(self):
+        self.table["name"] = "Pesho"
+        result = self.table.get("name")
+        self.assertEqual("Pesho", result)
+
+    def test_get_non_existing_key_expect_return_default_none(self):
+        result = self.table.get("name")
+        self.assertEqual(None, result)
+
+    def test_get_non_existing_key_expect_return_user_select_answer(self):
+        result = self.table.get("name", "Try again")
+        self.assertEqual("Try again", result)
+
+    def test_str_expect_success(self):
+        self.table.add("name", "Pesho")
+        self.table.add("car", "Skoda")
+        self.table.add("email", "Pesho@abv.bg")
+        self.table.add("city", "Plovdiv")
+        self.table.add("id", 123)
+
+        expected_msg = "{email: Pesho@abv.bg, name: Pesho, car: Skoda, city: Plovdiv, id: 123 }"
+
+        self.assertEqual(expected_msg, self.table.__str__())
+
+    def test_len(self):
+        self.table.add("name", "Pesho")
+        self.table.add("car", "Skoda")
+        self.table.add("email", "Pesho@abv.bg")
+        self.table.add("city", "Plovdiv")
+        self.table.add("id", 123)
+        self.assertEqual(8, len(self.table))
+
 
 if __name__ == "__main__":
     main()
