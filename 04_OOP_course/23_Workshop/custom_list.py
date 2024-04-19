@@ -31,7 +31,7 @@ class CustomList:
         value = self.__values[index]
         return value
 
-    def extend(self, value: Iterable):
+    def extend(self, value):
         if not isinstance(value, Iterable):
             raise ValueError("Value is not iterable!")
         self.__values.extend(value)
@@ -51,7 +51,8 @@ class CustomList:
         self.__values.clear()
 
     def index(self, value):
-        self._check_index(value)
+        if value not in self.__values:
+            return None
         return self.__values.index(value)
 
     def count(self, value):
