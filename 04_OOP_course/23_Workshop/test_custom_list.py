@@ -163,6 +163,24 @@ class TestCustomList(TestCase):
         result = self.list.count(20)
         self.assertEqual(0, result)
 
+    def test_reverse_expected_return_reversed_array_in_new_array(self):
+        self.list._CustomList__values = [1, "Asd", 7, 100]
+        result = self.list.reverse()
+        self.assertEqual([100, 7, "Asd", 1], result)
+        self.assertEqual([1, "Asd", 7, 100], self.list._CustomList__values)
+        self.assertIsNot(self.list._CustomList__values, result)
+
+    def test_copy_expect_return_copy_of_list(self):
+        self.list._CustomList__values = [1, "Asd", 7, 100]
+        result = self.list.copy()
+        self.assertEqual([1, "Asd", 7, 100], result)
+        self.assertIsNot(self.list._CustomList__values, result)
+
+    def test_count_with_non_empty_array_expect_correct_count(self):
+        self.list._CustomList__values = [1, "Asd", 7, 100, {"b": 1, "c": 2}]
+        result = self.list.size()
+        self.assertEqual(5, result)
+
     def test_move(self):
         self.list._CustomList__values = [1, 2, 3, 4, 5]
         result = self.list.move(3)
