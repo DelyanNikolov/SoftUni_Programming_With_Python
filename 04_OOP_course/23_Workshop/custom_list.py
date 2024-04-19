@@ -10,7 +10,7 @@ class CustomList:
 
     def _check_index(self, index):
         if not isinstance(index, int):
-            raise ValueError("Index must be of type integer!")
+            raise TypeError("Index must be of type integer!")
         if index < 0:
             raise ValueError("Index must be positive integer!")
 
