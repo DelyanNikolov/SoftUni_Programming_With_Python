@@ -72,11 +72,11 @@ class CustomList:
 
     def dictionize(self):
         result = {}
-        for key in range(0, len(self.__values) - 1, 2):
+        for idx in range(0, len(self.__values), 2):
             try:
-                result[key] = self.__values[key + 1]
+                result[self.__values[idx]] = self.__values[idx + 1]
             except IndexError:
-                result[key] = " "
+                result[self.__values[idx]] = " "
         return result
 
     def move(self, n):
@@ -113,7 +113,7 @@ class CustomList:
         return max_value_index
 
     def underbound(self):
-        min_value = float("-inf")
+        min_value = float("inf")
         min_value_index = None
 
         for index in range(0, len(self.__values)):

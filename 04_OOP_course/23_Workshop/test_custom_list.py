@@ -176,26 +176,84 @@ class TestCustomList(TestCase):
         self.assertEqual([1, "Asd", 7, 100], result)
         self.assertIsNot(self.list._CustomList__values, result)
 
-    def test_count_with_non_empty_array_expect_correct_count(self):
+    def test_size_with_non_empty_array_expect_correct_count(self):
         self.list._CustomList__values = [1, "Asd", 7, 100, {"b": 1, "c": 2}]
         result = self.list.size()
         self.assertEqual(5, result)
 
+    def test_size_with_empty_array_expect_correct_count(self):
+        result = self.list.size()
+        self.assertEqual(0, result)
+
+    def test_add_first_expected_add_on_index_0(self):
+        self.list._CustomList__values = [1, "Asd", 7, 100]
+        self.list.add_first(0)
+        self.assertEqual([0, 1, "Asd", 7, 100], self.list._CustomList__values)
+        self.assertEqual(0, self.list._CustomList__values[0])
+
+    def test_add_first_with_empty_array_expected_add_on_index_0(self):
+        self.list.add_first(0)
+        self.assertEqual([0], self.list._CustomList__values)
+        self.assertEqual(0, self.list._CustomList__values[0])
+
+        self.list.add_first("asd")
+        self.assertEqual(["asd", 0], self.list._CustomList__values)
+        self.assertEqual("asd", self.list._CustomList__values[0])
+
+    def test_dictionize_with_even_length(self):
+        self.list._CustomList__values = ["one", 1, "two", 2, "tree", 3]
+        result = self.list.dictionize()
+        self.assertEqual({"one": 1, "two": 2, "tree": 3}, result)
+
+    def test_dictionize_with_odd_length(self):
+        self.list._CustomList__values = ["one", 1, "two", 2, "tree"]
+        result = self.list.dictionize()
+        self.assertEqual({"one": 1, "two": 2, "tree": " "}, result)
+
     def test_move(self):
         self.list._CustomList__values = [1, 2, 3, 4, 5]
         result = self.list.move(3)
-
         self.assertEqual([4, 5, 1, 2, 3], result)
 
     def test_sum_with_only_numbers(self):
         self.list._CustomList__values = [1, 2, 3, 4, 5]
-
         result = self.list.sum()
         self.assertEqual(15, result)
 
     def test_sum_with_mixed_type_values(self):
         self.list._CustomList__values = [1, 2, "asd", {"a": 1, "b": 2}]
-
         result = self.list.sum()
-
         self.assertEqual(8, result)
+
+    def test_overbound_with_only_nums_expected_correct_result(self):
+        self.list._CustomList__values = [1, 2, 2, 3, 5, 100]
+        result = self.list.overbound()
+        self.assertEqual(5, result)
+
+    def test_overbound_with_mixed_types_values_expected_correct_result(self):
+        self.list._CustomList__values = [1, 2, "asd", {"a": 1, "b": 2}]
+        result = self.list.overbound()
+        self.assertEqual(2, result)
+
+    def test_underbound_with_empty_array_expected_None_result(self):
+        result = self.list.underbound()
+        self.assertIsNone(result)
+
+    def test_underbound_with_only_nums_expected_correct_result(self):
+        self.list._CustomList__values = [1, 2, 2, 3, 5, 100]
+        result = self.list.underbound()
+        self.assertEqual(0, result)
+
+    def test_underbound_with_mixed_types_values_expected_correct_result(self):
+        self.list._CustomList__values = [12, 2, "asd", 1, {"a": 1, "b": 2}]
+        result = self.list.underbound()
+        self.assertEqual(3, result)
+
+    def test_underbound_with_mixed_types_values_with_two_equal_values_expected_correct_result(self):
+        self.list._CustomList__values = [1, 2, "asd", 1, {"a": 1, "b": 2}]
+        result = self.list.underbound()
+        self.assertEqual(0, result)
+
+    def test_overbound_with_empty_array_expected_None_result(self):
+        result = self.list.overbound()
+        self.assertIsNone(result)
