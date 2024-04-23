@@ -30,6 +30,19 @@ def collect_dwarfs_info():
                 dwarfs_list[dwarf_hat_color][dwarf_name] = dwarf_physics
 
 
+def display_result(dwarfs_list):
+    dwarfs_info = []
+    result = []
+    for hat_colour in dwarfs_list:
+        for name, bmi in dwarfs_list[hat_colour].items():
+            dwarfs_info.append({"count": len(hat_colour), "name": name, "BMI": bmi, "hat colour": hat_colour})
+    for dwarf in sorted(dwarfs_info, key=lambda d: (-d["BMI"], -d["count"])):
+        result.append(f"({dwarf['hat colour']}) {dwarf['name']} <-> {dwarf['BMI']}")
+
+    print('\n'.join(result))
+
+
 dwarfs_list = {}
+
 collect_dwarfs_info()
-a = 5
+display_result(dwarfs_list)
