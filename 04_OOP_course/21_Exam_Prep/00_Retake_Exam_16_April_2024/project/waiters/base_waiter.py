@@ -18,7 +18,7 @@ class BaseWaiter(ABC):
 
     @property
     def hours_worked(self):
-        return
+        return self.__hours_worked
 
     @hours_worked.setter
     def hours_worked(self, value):
