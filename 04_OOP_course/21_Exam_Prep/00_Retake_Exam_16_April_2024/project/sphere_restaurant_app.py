@@ -17,8 +17,6 @@ class SphereRestaurantApp:
         self.clients: List[BaseClient] = []
 
     def hire_waiter(self, waiter_type: str, waiter_name: str, hours_worked: int):
-        """"The method creates a waiter of the given type and adds them to the waiters collection."""
-
         # creates a new waiter if waiter type is valid
         try:
             new_waiter = self.VALID_WAITER_TYPES[waiter_type](waiter_name, hours_worked)
@@ -36,7 +34,6 @@ class SphereRestaurantApp:
         return f"{waiter_name} is successfully hired as a {waiter_type}."
 
     def admit_client(self, client_type: str, client_name: str):
-        """The method creates a client of the given type and adds them to the clients collection."""
         # creates a new client if waiter type is valid if not returns error msg
         try:
             new_client = self.VALID_CLIENT_TYPES[client_type](client_name)
@@ -53,8 +50,6 @@ class SphereRestaurantApp:
         return f"{client_name} is successfully admitted as a {client_type}."
 
     def process_shifts(self, waiter_name: str):
-        """The method is responsible for managing the shifts of waiters."""
-
         # if waiter exists returns shift report if not returns error msg
         try:
             waiter = next(filter(lambda w: w.name == waiter_name, self.waiters))
@@ -63,8 +58,6 @@ class SphereRestaurantApp:
             return f"No waiter found with the name {waiter_name}."
 
     def process_client_order(self, client_name: str, order_amount: float):
-        """The method is responsible for processing the client's order."""
-
         # if client exists returns points earned if not returns error msg
         try:
             client = next(filter(lambda c: c.name == client_name, self.clients))
@@ -73,9 +66,6 @@ class SphereRestaurantApp:
             return f"{client_name} is not a registered client."
 
     def apply_discount_to_client(self, client_name: str):
-        """The method is responsible for applying a discount to a client's account."""
-
-        # If the client is successfully identified, it applies the discount and returns a message
         try:
             client = next(filter(lambda c: c.name == client_name, self.clients))
             discount_percentage, remaining_points = client.apply_discount()
@@ -84,9 +74,6 @@ class SphereRestaurantApp:
             return f"{client_name} cannot get a discount because this client is not admitted!"
 
     def generate_report(self):
-        """"Returns a detailed report for the Sphere Restaurant. The report includes information about total earnings,
-        the total  clients unused points, total clients count, and individual details for each waiter."""
-
         sorted_waiters = sorted(self.waiters, key=lambda w: -w.calculate_earnings())
         total_earnings = sum([w.calculate_earnings() for w in self.waiters])
         total_client_points = sum([c.points for c in self.clients])
