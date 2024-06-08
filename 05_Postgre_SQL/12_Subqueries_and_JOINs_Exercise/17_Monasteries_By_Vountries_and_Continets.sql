@@ -18,7 +18,7 @@ VALUES
 SELECT
 	c.continent_name,
 	cou.country_name,
-	COUNT(m.country_code) AS monasteries_count
+	COUNT(m.monastery_name) AS monasteries_count
 FROM
 	continents as c
 LEFT JOIN
