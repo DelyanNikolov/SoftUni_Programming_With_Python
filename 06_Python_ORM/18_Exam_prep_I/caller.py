@@ -6,8 +6,8 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm_skeleton.settings")
 django.setup()
 
 # Import your models here
-from main_app.models import Director, Actor
-from django.db.models import Q, Count, Avg
+from main_app.models import Director, Actor, Movie
+from django.db.models import Q, Count, Avg, F
 
 
 # Create queries within functions
@@ -61,4 +61,49 @@ def get_top_actor():
     return (f"Top Actor: {top_starring_actor.full_name},"
             f" starring in movies: {movies}, "
             f"movies average rating: {top_starring_actor.avg_rating:.1f}")
+
+
+def get_actors_by_movies_count() -> str:
+    top_three_actors = Actor.objects.annotate(movies_count=Count('movie')).order_by('-movies_count', 'full_name')[:3]
+
+    if not top_three_actors or not top_three_actors[0].movies_count:
+        return ""
+
+    result = []
+    for actor in top_three_actors:
+        result.append(f"{actor.full_name}, participated in {actor.movies_count} movies")
+
+    return '\n'.join(result)
+
+
+def get_top_rated_awarded_movie():
+    top_movie = Movie.objects \
+        .select_related('starring_actor') \
+        .prefetch_related('actors') \
+        .filter(is_awarded=True) \
+        .order_by('-rating', 'title') \
+        .first()
+
+    if top_movie is None:
+        return ''
+
+    starring_actor = top_movie.starring_actor.full_name if top_movie.starring_actor else 'N/A'
+
+    participating_actors = top_movie.actors.order_by('full_name').values_list('full_name', flat=True)
+
+    cast = ', '.join(participating_actors)
+
+    return f"Top rated awarded movie: {top_movie.title}, rating: {top_movie.rating:.1f}." \
+           f" Starring actor: {starring_actor}. Cast: {cast}."
+
+
+def increase_rating():
+    movies_to_update = Movie.objects.filter(is_classic=True, rating__lt=10)
+
+    if not movies_to_update:
+        return 'No ratings increased.'
+
+    updated_movies_count = movies_to_update.count()
+    movies_to_update.update(rating=F('rating') + 0.1)
+    return f'Rating increased for {updated_movies_count} movies.'
 
