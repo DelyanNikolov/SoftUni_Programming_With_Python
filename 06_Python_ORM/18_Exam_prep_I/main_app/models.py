@@ -43,6 +43,7 @@ class Director(GeneralInfo):
 
     objects = DirectorManager()
 
+
 class Actor(GeneralInfo, IsAwardedMixin, LastUpdatedMixin):
     pass
 
