@@ -7,7 +7,7 @@ django.setup()
 
 # Import your models here
 from main_app.models import Author, Article, Review
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Avg
 
 
 # Create queries within functions
@@ -60,3 +60,27 @@ def get_top_reviewer() -> str:
 
     return (f"Top Reviewer: {top_reviewer.full_name} "
             f"with {top_reviewer.reviews_count} published reviews.")
+
+
+def get_latest_article() -> str:
+    latest_article = Article.objects.order_by('-published_on').first()
+
+    if latest_article is None:
+        return ""
+
+    authors = latest_article.authors.order_by('full_name')
+    author_names = ", ".join(author.full_name for author in authors)
+
+    reviews = Review.objects.filter(article=latest_article)
+    num_reviews = reviews.count()
+    avg_rating = reviews.aggregate(avg_rating=Avg('rating'))['avg_rating']
+
+    avg_rating = f"{avg_rating:.2f}" if avg_rating is not None else "0.00"
+
+    result = (
+        f"The latest article is: {latest_article.title}. "
+        f"Authors: {author_names}. "
+        f"Reviewed: {num_reviews} times. "
+        f"Average Rating: {avg_rating}."
+    )
+    return result
