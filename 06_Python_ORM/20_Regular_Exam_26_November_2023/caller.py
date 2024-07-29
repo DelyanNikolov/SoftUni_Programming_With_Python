@@ -84,3 +84,29 @@ def get_latest_article() -> str:
         f"Average Rating: {avg_rating}."
     )
     return result
+
+
+def get_top_rated_article():
+    top_article = Article.objects.annotate(
+        avg_rating=Avg('review__rating'), reviews_count=Count('review')
+    ).filter(reviews_count__gt=0).order_by('-avg_rating', 'title').first()
+
+    if top_article is None or top_article.reviews_count == 0:
+        return ""
+
+    return (f"The top-rated article is:"
+            f" {top_article.title}, with an average rating of {top_article.avg_rating:.2f}, "
+            f"reviewed {top_article.reviews_count} times.")
+
+
+def ban_author(email=None):
+    author = Author.objects.prefetch_related('review_set').filter(email__exact=email).first()
+    if email is None or author is None:
+        return "No authors banned."
+
+    reviews_count = author.review_set.count()
+    author.is_banned = True
+    author.save()
+    author.review_set.all().delete()
+
+    return f"Author: {author.full_name} is banned! {reviews_count} reviews deleted."
