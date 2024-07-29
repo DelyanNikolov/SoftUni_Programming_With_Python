@@ -2,6 +2,7 @@ from django.core.validators import MinLengthValidator, MinValueValidator, MaxVal
 from django.db import models
 
 from main_app.custom_choices import MovieGenreChoices
+from main_app.custom_managers import DirectorManager
 from main_app.mixins import IsAwardedMixin, LastUpdatedMixin
 
 
@@ -34,6 +35,8 @@ class Director(BasePerson):
             MinValueValidator(0),
         ]
     )
+
+    objects = DirectorManager()
 
 
 class Actor(BasePerson, IsAwardedMixin, LastUpdatedMixin):
