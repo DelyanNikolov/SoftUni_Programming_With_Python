@@ -53,10 +53,8 @@ class Movie(IsAwardedMixin, LastUpdatedMixin):
     storyline = models.TextField(blank=True, null=True)
 
     genre = models.CharField(
+        max_length=6,
         choices=MovieGenreChoices.choices,
-        validators=[
-            MaxLengthValidator(6),
-        ],
         default=MovieGenreChoices.OTHER
     )
 
