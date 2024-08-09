@@ -60,61 +60,68 @@ def get_top_reviewer():
 
 
 def get_latest_article() -> str:
-    latest_article = Article.objects.order_by('-published_on').first()
+    last_article = Article.objects.prefetch_related(
+        'reviews', 'authors'
+    ).order_by(
+        '-published_on'
+    ).annotate(
+        num_reviews=Count('reviews'),
+        avg_reviews_rating=Avg('reviews__rating')
+    ).first()
 
-    if latest_article is None:
+    if last_article is None:
         return ""
 
-    authors = latest_article.authors.order_by('full_name')
-    author_names = ", ".join(author.full_name for author in authors)
-
-    reviews = Review.objects.filter(article=latest_article)
-    num_reviews = reviews.count()
-    avg_rating = reviews.aggregate(avg_rating=Avg('rating'))['avg_rating']
-
-    avg_rating = f"{avg_rating:.2f}" if avg_rating is not None else "0.00"
-
-    result = (
-        f"The latest article is: {latest_article.title}. "
-        f"Authors: {author_names}. "
-        f"Reviewed: {num_reviews} times. "
-        f"Average Rating: {avg_rating}."
-    )
-    return result
+    authors_names = ', '.join(a.full_name for a in last_article.authors.order_by('full_name'))
+    average_rating = last_article.avg_reviews_rating if last_article.avg_reviews_rating is not None else 0.00
+    return (f"The latest article is: {last_article.title}. "
+            f"Authors: {authors_names}. "
+            f"Reviewed: {last_article.num_reviews} times. "
+            f"Average Rating: {average_rating:.2f}.")
 
 
-def get_top_rated_article():
-    articles = Article.objects.annotate(
-        avg_rating=Avg('articles__rating'),
-        num_reviews=Count('articles__rating')
-    ).filter(num_reviews__gt=0)
+def get_top_rated_article() -> str:
+    top_article = Article.objects.prefetch_related(
+        'reviews',
+    ).annotate(
+        num_reviews=Count('reviews'),
+        avg_rating=Avg('reviews__rating')
+    ).order_by(
+        '-avg_rating', 'title'
+    ).first()
 
-    if not articles.exists():
+    if top_article is None or top_article.num_reviews == 0:
         return ""
 
-    top_article = articles.order_by('-avg_rating', 'title').first()
+    average_rating = top_article.avg_rating if top_article.avg_rating is not None else 0.00
 
-    avg_rating = f"{top_article.avg_rating:.2f}"
-    num_reviews = top_article.num_reviews
-    article_title = top_article.title
-
-    return f"The top-rated article is: {article_title}, with an average rating of {avg_rating}, reviewed {num_reviews} times."
+    return (f"The top-rated article is: {top_article.title}, "
+            f"with an average rating of {average_rating:.2f}, "
+            f"reviewed {top_article.num_reviews} times.")
 
 
 def ban_author(email=None):
     if email is None:
         return "No authors banned."
+    author_to_ban = Author.objects.prefetch_related(
+        "reviews_author"
+    ).annotate(
+        reviews_count=Count("reviews_author")
+    ).filter(
+        email__iexact=email
+    ).first()
 
-    try:
-        author = Author.objects.prefetch_related('reviews_author').get(email=email)
-    except Author.DoesNotExist:
+    if author_to_ban is None:
         return "No authors banned."
 
-    num_reviews = author.reviews_author.count()
+    num_reviews = author_to_ban.reviews_count
 
-    author.is_banned = True
-    author.save()
+    author_to_ban.is_banned = True
+    author_to_ban.save()
 
-    author.reviews_author.all().delete()
+    author_to_ban.reviews_author.all().delete()
 
-    return f"Author: {author.full_name} is banned! {num_reviews} reviews deleted."
+    return f"Author: {author_to_ban.full_name} is banned! {num_reviews} reviews deleted."
+
+
+print(ban_author('Author 4'))

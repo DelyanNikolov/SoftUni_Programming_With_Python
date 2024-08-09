@@ -34,4 +34,4 @@ class Review(PublishedOnMixin, models.Model):
     content = models.TextField(validators=[MinLengthValidator(10)])
     rating = models.FloatField(validators=[MinValueValidator(1.0), MaxValueValidator(5.0)])
     author = models.ForeignKey(to=Author, related_name='reviews_author', on_delete=models.CASCADE)
-    article = models.ForeignKey(to=Article, related_name='articles', on_delete=models.CASCADE)
+    article = models.ForeignKey(to=Article, related_name='reviews', on_delete=models.CASCADE)
