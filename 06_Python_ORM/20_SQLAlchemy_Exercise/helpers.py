@@ -1,4 +1,4 @@
-def session_decorator(session):
+def session_decorator(session, auto_close_session=True):
     def decorator(func):
         def wrapper(*args, **kwargs):
             try:
@@ -12,7 +12,8 @@ def session_decorator(session):
                 raise e
 
             finally:
-                session.close()
+                if auto_close_session:
+                    session.close()
 
         return wrapper
 
