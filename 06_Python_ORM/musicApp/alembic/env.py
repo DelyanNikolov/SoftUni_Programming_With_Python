@@ -7,6 +7,8 @@ from alembic import context
 
 from musicApp.settings import Base
 
+from musicApp.musics.models import Song, Album
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
