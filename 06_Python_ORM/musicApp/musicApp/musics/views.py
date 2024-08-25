@@ -1,27 +1,121 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+
+from musicApp.common.session_decorator import session_decorator
+from musicApp.musics.forms import SongCreateForm, AlbumCreateForm, AlbumEditForm, AlbumDeleteForm
+from musicApp.musics.models import Album
+from musicApp.settings import session
 
 
 # Create your views here.
+@session_decorator(session)
 def index(request):
-    return render(request, 'common/index.html')
+    albums = session.query(Album).all()
+
+    context = {
+        'albums': albums
+    }
+
+    return render(request, 'common/index.html', context)
 
 
 def create_album(request):
-    return render(request, 'albums/create-album.html')
+    if request.method == 'GET':
+        form = AlbumCreateForm()
+    else:
+        form = AlbumCreateForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+
+    context = {
+        'form': form
+    }
+
+    return render(request, 'albums/create-album.html', context)
 
 
+@session_decorator(session)
 def edit_album(request, pk: int):
-    return render(request, 'albums/edit-album.html')
+    album = (
+        session.query(Album)
+        .filter(Album.id == pk)
+        .first()
+    )
+
+    if request.method == 'GET':
+        form = AlbumEditForm(initial={
+            "album_name": album.album_name,
+            "image_url": album.image_url,
+            "price": album.price,
+        })
+    else:
+        form = AlbumEditForm(request.POST)
+
+        if form.is_valid():
+            form.save(album)
+            return redirect('index')
+
+    context = {
+        "album": album,
+        "form": form
+    }
+
+    return render(request, 'albums/edit-album.html', context)
 
 
+@session_decorator(session)
 def delete_album(request, pk: int):
-    return render(request, 'albums/delete-album.html')
+    album = (
+        session.query(Album)
+        .filter(Album.id == pk)
+        .first()
+    )
+
+    if request.method == 'GET':
+        form = AlbumDeleteForm(initial={
+            "album_name": album.album_name,
+            "image_url": album.image_url,
+            "price": album.price,
+        })
+    else:
+        session.delete(album)
+        return redirect('index')
+
+    context = {
+        "album": album,
+        "form": form
+    }
+    return render(request, 'albums/delete-album.html', context)
 
 
+@session_decorator(session)
 def album_details(request, pk: int):
-    return render(request, 'albums/album-details.html')
+    album = (
+        session.query(Album)
+        .filter(Album.id == pk)
+        .first()
+    )
+
+    context = {
+        'album': album
+    }
+
+    return render(request, 'albums/album-details.html', context)
 
 
 def create_song(request):
-    return render(request, 'songs/create-song.html')
+    if request.method == 'GET':
+        form = SongCreateForm()
+    else:
+        form = SongCreateForm(request.POST)
 
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+
+    context = {
+        'form': form
+    }
+
+    return render(request, 'songs/create-song.html', context)
