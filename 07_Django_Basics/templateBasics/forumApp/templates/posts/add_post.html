@@ -15,10 +15,10 @@
 
     {% include 'nav.html' %}
 
-    <h1>Hello User! This is the current time: {{ current_time }}</h1>
-    <form action="/" method="get">
-        {{ my_form }}    
-        <button>Submit</button>
+    <form action="{% url 'add-post' %}" method="post">
+        {{ form }}
+        {% csrf_token %}
+        <button class="button-9">Submit</button>
     </form>
 
 </body>
