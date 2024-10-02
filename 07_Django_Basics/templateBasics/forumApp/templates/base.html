@@ -13,13 +13,13 @@
 </head>
 <body>
 
-    {% include 'nav.html' %}
+    {% include 'common/nav.html' %}
+    
+    <p>Last refreshed: {{ current_time }}</p>
 
-    <h1>Hello User! This is the current time: {{ current_time }}</h1>
-    <form action="/" method="get">
-        {{ my_form }}    
-        <button>Submit</button>
-    </form>
+    {% block content %}
+    {% endblock %}
+
 
 </body>
     <script src='https://unpkg.com/akar-icons-fonts'></script>

@@ -3,17 +3,21 @@ from datetime import datetime
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from forumApp.posts.forms import PostBaseForm, PostDeleteForm, SearchForm
+from forumApp.posts.forms import PostBaseForm, PostDeleteForm, SearchForm, PostCreateForm, PostEditForm
 from forumApp.posts.models import Post
 
 
 # Create your views here.
 def index(request):
+
+    current_time = datetime.now()
+    user_info = "Hello: "
     context = {
-        "my_form": "",
+        "current_time": current_time,
+        "user_info": user_info,
     }
 
-    return render(request, 'base.html', context)
+    return render(request, 'posts/index.html', context)
 
 
 def dashboard(request):
@@ -34,7 +38,7 @@ def dashboard(request):
 
 
 def add_post(request):
-    form = PostBaseForm(request.POST or None)  # TODO: inherit form
+    form = PostCreateForm(request.POST or None)
 
     if request.method == 'POST':
         if form.is_valid():
@@ -51,6 +55,10 @@ def add_post(request):
 def delete_post(request, pk: int):
     post = Post.objects.get(pk=pk)
     form = PostDeleteForm(instance=post)
+
+    if request.method == 'POST':
+        post.delete()
+        return redirect('dash')
 
     context = {
         "form": form,
@@ -71,4 +79,19 @@ def details_post(request, pk: int):
 
 
 def edit_post(request, pk: int):
-    return HttpResponse()  # TODO fix view
+    post = Post.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        form = PostEditForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('dash')
+    else:
+        form = PostEditForm(instance=post)
+
+    context = {
+        "post": post,
+        "form": form,
+    }
+
+    return render(request, "posts/edit_post.html", context)
