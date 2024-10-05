@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+    {% block content %}
+        <h1>Delete post:</h1>
+    <form action="{% url 'delete-post' post.pk %}" method="post">
+        {{ form }}
+        {% csrf_token %}
+        <button class="button-9">Delete</button>
+    </form>
+    {% endblock %}
