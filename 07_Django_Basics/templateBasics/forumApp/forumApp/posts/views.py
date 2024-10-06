@@ -3,7 +3,7 @@ from datetime import datetime
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from forumApp.posts.forms import PostBaseForm, PostDeleteForm, SearchForm, PostCreateForm, PostEditForm
+from forumApp.posts.forms import PostBaseForm, PostDeleteForm, SearchForm, PostCreateForm, PostEditForm, CommentFormSet
 from forumApp.posts.models import Post
 
 
@@ -38,7 +38,7 @@ def dashboard(request):
 
 
 def add_post(request):
-    form = PostCreateForm(request.POST or None)
+    form = PostCreateForm(request.POST or None, request.FILES or None)
 
     if request.method == 'POST':
         if form.is_valid():
@@ -70,9 +70,23 @@ def delete_post(request, pk: int):
 
 def details_post(request, pk: int):
     post = Post.objects.get(pk=pk)
+    formset = CommentFormSet(request.POST or None)
+    comments = post.comments.all()
+
+    if request.method == 'POST':
+        if formset.is_valid():
+            for form in formset:
+                if form.cleaned_data:
+                    comment = form.save(commit=False)
+                    comment.post = post
+                    comment.save()
+
+            return redirect('details-post', pk=post.id)
 
     context = {
         "post": post,
+        "formset": formset,
+        "comments": comments,
     }
 
     return render(request, 'posts/details_post.html', context)

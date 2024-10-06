@@ -1,7 +1,9 @@
 from django import forms
+from django.forms import formset_factory
 
 from forumApp.posts.choices import LanguageChoice
-from forumApp.posts.models import Post
+from forumApp.posts.mixins import DisableFormFieldsMixin
+from forumApp.posts.models import Post, Comment
 
 
 class PostBaseForm(forms.ModelForm):
@@ -18,12 +20,10 @@ class PostEditForm(PostBaseForm):
     pass
 
 
-class PostDeleteForm(PostBaseForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        for field in self.fields:
-            self.fields[field].disabled = True
+class PostDeleteForm(PostBaseForm, DisableFormFieldsMixin):
+    disabled_fields = (
+        "__all__",
+    )
 
 
 class SearchForm(forms.Form):
@@ -37,3 +37,39 @@ class SearchForm(forms.Form):
             }
         )
     )
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('author', 'content',)
+
+        labels = {
+            'author': '',
+            'content': ''
+        }
+
+        error_messages = {
+            'author': {
+                'required': 'Author name is required!'
+            },
+            'content': {
+                'required': 'Content is required!'
+            }
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+
+        self.fields['author'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Your name...',
+        })
+
+        self.fields['content'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Add message...'
+        })
+
+
+CommentFormSet = formset_factory(CommentForm, extra=1)
