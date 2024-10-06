@@ -1,7 +1,9 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends 'common/base.html' %}
 {% load markdown_extras %}
-    {% block content %}
+
+{% block content %}
+        {% include 'common/nav.html' %}
+        
         <div class="container">
             {% include 'posts/search_form.html' %}
             <div class="posts">
@@ -13,7 +15,7 @@
                         {% if not post.content %}
                             {% lorem 3 p %}
                         {% else %}
-                            {{ post.content|markdown }}
+                            {{ post.content|markdown|capfirst }}
                         {% endif %}
                     
                         <div class="post-meta">
@@ -23,8 +25,8 @@
                 </a>
 
             {% empty %}
-                <h1>No Posts</h1>
+                <h1 class="no-posts">No Posts</h1>
             {% endfor %}
         </div>
     </div>
-    {% endblock %}
+{% endblock %}

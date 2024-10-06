@@ -17,7 +17,7 @@ def index(request):
         "user_info": user_info,
     }
 
-    return render(request, 'posts/index.html', context)
+    return render(request, 'posts/../../templates/common/index.html', context)
 
 
 def dashboard(request):
