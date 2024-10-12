@@ -16,7 +16,9 @@
 
             <!-- Start Pet Photos Post Section -->
             <!-- Start First Pet Photo Post -->
-            {% include 'common/pet-posts.html' %}
+            {% for photo in all_photos %}
+                {% include 'common/pet-posts.html' %}
+            {% endfor %}
 
             <!-- End Pet Photos Post Section -->
 
