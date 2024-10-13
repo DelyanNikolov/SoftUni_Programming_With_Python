@@ -7,6 +7,11 @@ from petstagram.photos.models import Photo
 
 
 class Comment(models.Model):
+    class Meta:
+        indexes = [
+            models.Index(fields=('date_time_of_publication',))
+        ]
+        ordering = ['-date_time_of_publication']
     text = models.TextField(
         max_length=300,
     )
