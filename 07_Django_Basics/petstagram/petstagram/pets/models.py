@@ -27,8 +27,8 @@ class Pets(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        if not self.slug:
-            self.slug = slugify(f"{self.name} - {self.id}")
+        # if not self.slug: (row removed to fix slug change in url)
+        self.slug = slugify(f"{self.name} - {self.id}")
 
         super().save(*args, **kwargs)
 
