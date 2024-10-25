@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('fruitipedia_exam_prep.common.urls')),
     path('profile/', include('fruitipedia_exam_prep.profile_app.urls')),
+    path('fruit/', include('fruitipedia_exam_prep.fruits_app.urls')),
 ]
