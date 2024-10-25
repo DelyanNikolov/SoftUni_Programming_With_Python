@@ -21,4 +21,5 @@ from django.urls.conf import include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('fruitipedia_exam_prep.common.urls')),
+    path('profile/', include('fruitipedia_exam_prep.profile_app.urls')),
 ]
