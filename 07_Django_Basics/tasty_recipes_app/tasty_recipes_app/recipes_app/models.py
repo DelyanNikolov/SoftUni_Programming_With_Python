@@ -16,7 +16,7 @@ class Recipe(models.Model):
         error_messages={
             'unique': "We already have a recipe with the same title!",
         },
-        verbose_name="Recipe",
+        verbose_name="Title",
     )
 
     cuisine_type = models.CharField(
