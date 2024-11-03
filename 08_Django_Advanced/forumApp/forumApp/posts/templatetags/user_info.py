@@ -7,7 +7,7 @@ register = template.Library()
 def user_info(user):
     if user.is_authenticated:
         return {
-            'username': user.usename
+            'username': user.username
         }
 
     return {
