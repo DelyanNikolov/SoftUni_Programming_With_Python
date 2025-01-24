@@ -1,0 +1,15 @@
+div p {
+    color: blue;
+}
+
+ul > li {
+    list-style: square;
+}
+
+p + p {
+    background-color: lightslategray;
+}
+
+p ~ span {
+    font-weight: bold;
+}

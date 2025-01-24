@@ -1,0 +1,29 @@
+.highlighted {
+    color: aqua;
+}
+
+
+.special {
+    font-weight: bold;
+    background-color: goldenrod;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5)
+}
+
+ul li:first-child {
+    color: green;
+}
+
+ul li:last-child {
+    color: red;
+    font-style: italic;
+}
+
+a[href*="softuni"] {
+    color: gold;
+    border-bottom: 1px solid gold;
+
+}
+
+.fancy {
+    font-weight: bold;
+}

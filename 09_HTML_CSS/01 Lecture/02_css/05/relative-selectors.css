@@ -1,0 +1,32 @@
+section p {
+    color: gray;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.items > li {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+article.highlited + article  {
+    color: gray;
+    background-color: lightcoral;
+}
+
+h2 ~ p {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: lightskyblue;
+}
+
+ul {
+    list-style: none;
+}
+
+ul ul > li {
+    color: blue;
+    font-weight: bold;
+}
+
+li.two + li a{
+    color: green;
+}
