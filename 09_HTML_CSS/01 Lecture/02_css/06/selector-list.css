@@ -1,0 +1,30 @@
+nav ul > li {
+    list-style: none;
+}   
+
+nav ul {
+    display: flex;
+    padding: 0;
+}
+
+nav ul > li a {
+    text-decoration: none;
+    color: black;
+    margin: 0.5em;
+    padding: 1em;
+}
+
+nav ul > li a:hover {
+    background-color: aqua;
+}
+
+h1, h2, p {
+        font-family: Verdana, sans-serif;
+        color: gray;
+}
+
+header, section, footer, nav {
+    border: 2px solid black;
+    margin: 1.5em;
+    padding: 2em;
+}
